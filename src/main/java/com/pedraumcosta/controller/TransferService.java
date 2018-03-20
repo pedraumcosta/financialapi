@@ -15,12 +15,12 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 @RestController
-@Transactional
 public class TransferService {
 
     @Autowired
     private AccountRepository accountRepository;
 
+    @Transactional
     @RequestMapping(path = "/transfer/", method = RequestMethod.POST)
     public TransferRequest transferFunds(@RequestBody TransferRequest transferRequest)
             throws BusinessException {
