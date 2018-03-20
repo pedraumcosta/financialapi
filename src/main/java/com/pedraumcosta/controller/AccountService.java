@@ -1,5 +1,6 @@
 package com.pedraumcosta.controller;
 
+import com.pedraumcosta.exceptions.BusinessException;
 import com.pedraumcosta.model.Account;
 import com.pedraumcosta.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,13 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     @RequestMapping(path = "/account/", method = RequestMethod.POST)
-    public Account saveAccount(@RequestBody Account account) {
+    public Account saveAccount(@RequestBody Account account) throws BusinessException {
         if (account == null || account.getName() == null) {
             throw new IllegalArgumentException("Not enough information to create an account");
+        }
+
+        if (account.getBalance().compareTo(new BigDecimal(0)) < 0) {
+            throw new BusinessException("Can't create an account with negative balance");
         }
 
         accountRepository.save(account);

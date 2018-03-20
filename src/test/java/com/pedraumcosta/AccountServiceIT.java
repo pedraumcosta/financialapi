@@ -70,6 +70,19 @@ public class AccountServiceIT {
                 .body("error", equalTo("Not enough information to create an account"));
     }
 
+    @Test
+    public void test5CreateAccountWithNegativeBalance() {
+        String accountName = "DummyAccountName";
+        BigDecimal neagtiveValue = new BigDecimal(-1000);
+        Account account = new Account(accountName, neagtiveValue);
+        given().contentType(ContentType.JSON).body(account)
+                .when().post(ACCOUNT_ENDPOINT).then()
+                .assertThat().statusCode(equalTo(HttpStatus.BAD_REQUEST.value()))
+                .body("error", equalTo("Can't create an account with negative balance"));;
+
+
+    }
+
 
     //@todo Create account with same name
 }
