@@ -15,15 +15,29 @@ import static org.hamcrest.Matchers.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AccountServiceIT {
 
-    private static final String ACCOUNT_ENDPOINT = "/accounts/";
+    private static final String ACCOUNTS_ENDPOINT = "/accounts/";
+    private static final String ACCOUNT_ENDPOINT = "/account/";
 
-    String accountName = "Happy Account Holder";
-    BigDecimal balance = new BigDecimal(0);
+    String accountName0 = "HappyAccountHolder";
+    String accountName1 = "UnHappyAccountHolder";
+    String accountName2 = "NoFeelingsAccountHolder";
+    BigDecimal balanceAccount0 = new BigDecimal(1000);
+    BigDecimal balanceAccount1 = new BigDecimal(2000);
+    BigDecimal balanceAccount2 = new BigDecimal(3000);
 
     @Test
-    public void test1CreateAccount() {
-        Account account = new Account(accountName, balance);
+    public void test1CreateAccounts() {
+        Account account = new Account(accountName0, balanceAccount0);
+        given().contentType(ContentType.JSON).body(account)
+                .when().post(ACCOUNT_ENDPOINT).then()
+                .assertThat().statusCode(equalTo(HttpStatus.OK.value()));
 
+        account = new Account(accountName1, balanceAccount1);
+        given().contentType(ContentType.JSON).body(account)
+                .when().post(ACCOUNT_ENDPOINT).then()
+                .assertThat().statusCode(equalTo(HttpStatus.OK.value()));
+
+        account = new Account(accountName2, balanceAccount2);
         given().contentType(ContentType.JSON).body(account)
                 .when().post(ACCOUNT_ENDPOINT).then()
                 .assertThat().statusCode(equalTo(HttpStatus.OK.value()));
@@ -31,8 +45,31 @@ public class AccountServiceIT {
 
     @Test
     public void test2ListAccounts() {
-        when().get(ACCOUNT_ENDPOINT).then()
-                .body("[0].name", equalTo(accountName))
-                .body("[0].balance", equalTo(0.0f));
+        when().get(ACCOUNTS_ENDPOINT).then()
+                .body("[0].name", equalTo(accountName0))
+                .body("[0].balance", equalTo(1000f))
+                .body("[1].name", equalTo(accountName1))
+                .body("[1].balance", equalTo(2000f));
     }
+
+    @Test
+    public void test3ListExistingAccount() {
+        String appPath = ACCOUNT_ENDPOINT + accountName0;
+        when().get(appPath).then()
+                .body("name", equalTo(accountName0))
+                .body("balance", equalTo(1000f));
+    }
+
+    @Test
+    public void test4CreateAnEmptyAccount() {
+        Account account = new Account();
+        given().contentType(ContentType.JSON).body(account)
+                .when().post(ACCOUNT_ENDPOINT).then()
+                .assertThat()
+                .statusCode(equalTo(HttpStatus.BAD_REQUEST.value()))
+                .body("error", equalTo("Not enough information to create an account"));
+    }
+
+
+    //@todo Create account with same name
 }
