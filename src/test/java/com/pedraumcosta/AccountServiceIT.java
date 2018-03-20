@@ -82,7 +82,4 @@ public class AccountServiceIT {
 
 
     }
-
-
-    //@todo Create account with same name
 }
