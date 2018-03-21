@@ -115,8 +115,8 @@ A financial institution must have multiple services, several partners to interac
 
 The best practices, most certainly, must include an hybrid microservices architecture along with an event driven platform. It is impossible and too costly to handle all this in one system and it can not be synchronous.
 
-THIS IS A HUGE CHALLENGE.
+THIS IS A HUGE CHALLENGE. More on that TBA.
 
 Following is a conceptual architecture
 
-![Architecture](images/architecture.png) 
+![Architecture](images/architecture.png)
