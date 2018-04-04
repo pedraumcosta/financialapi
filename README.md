@@ -38,6 +38,7 @@ Open your browser to:  http://localhost:8080/swagger-ui.html
 - No API authentication
 - The account names are being used as an account identifier, since they are strings and this implementation use H2 Database they can overlap.
 - Status Transfer is not being used in all possible cases.
+- The transfer operation is not isolated.
 
 # Solution Design
 Nowadays any digital business asset must be provided as an API. Read more about the API Economy: `https://www.ibm.com/cloud/api-economy`

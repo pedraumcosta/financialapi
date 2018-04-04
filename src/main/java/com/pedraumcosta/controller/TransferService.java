@@ -20,6 +20,7 @@ public class TransferService {
     @Autowired
     private AccountRepository accountRepository;
 
+    //Esse transaction naum se isola entre outras requests.
     @Transactional
     @RequestMapping(path = "/transfer/", method = RequestMethod.POST)
     public TransferRequest transferFunds(@RequestBody TransferRequest transferRequest)
